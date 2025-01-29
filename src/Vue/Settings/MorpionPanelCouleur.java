@@ -1,4 +1,8 @@
 package Vue.Settings;
 
-public class MorpionPanelCouleur {
+public  class MorpionPanelCouleur extends MorpionPanelPrincipal {
+
+    public MorpionPanelCouleur(){
+        super("Couleur :");
+    }
 }
