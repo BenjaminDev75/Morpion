@@ -23,6 +23,15 @@ public class MorpionMenu extends JFrame implements ActionListener {
         this.setLayout(null);
         this.setResizable(false);
 
+        // Menu play / settings
+        this.panelForm.setBackground(Color.DARK_GRAY);
+        this.panelForm.setLayout(new GridLayout(2, 1));
+        this.panelForm.setBounds(500, 360, 500, 200);
+        this.panelForm.add(btPlay);
+        this.panelForm.add(btSettings);
+        this.add(panelForm);
+
+
         this.setVisible(true);
     }
 
