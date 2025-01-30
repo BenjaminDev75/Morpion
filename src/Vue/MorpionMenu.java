@@ -50,6 +50,11 @@ public class MorpionMenu extends JFrame implements ActionListener, MorpionThemeM
             Morpion.setVisibleMenu(false);
             Morpion.createMorpionSettingsVueGenerale(true);
         }
+
+        if (e.getSource() == btPlay) {
+            Morpion.setVisibleMenu(false);
+            Morpion.createPlayMenu(true);
+        }
     }
 
     @Override
