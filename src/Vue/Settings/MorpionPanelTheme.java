@@ -52,8 +52,12 @@ public class MorpionPanelTheme extends MorpionPanelPrincipal {
 
         // Ajouter les boutons au panneau
         this.add(btSombre);
+        btSombre.setBackground(Color.WHITE);
         this.add(btClair);
+        btClair.setBackground(Color.WHITE);
         this.add(btAleatoire);
+        btAleatoire.setBackground(Color.WHITE);
         this.add(btChoisir);
+        btChoisir.setBackground(Color.WHITE);
     }
 }

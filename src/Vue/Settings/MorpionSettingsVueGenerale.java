@@ -4,8 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Controleur.Morpion;
 
-public class MorpionSettingsVueGenerale extends JFrame  implements ActionListener {
+public class MorpionSettingsVueGenerale extends JFrame  implements ActionListener, MorpionThemeManager.ColorChangeListener  {
 
     private JPanel panelSettings = new JPanel();
 
@@ -22,19 +23,22 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         this.setTitle("Paramètre");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
-        this.getContentPane().setBackground(Color.DARK_GRAY);
+        this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());
         this.setLayout(null);
         this.setBounds(100, 100, 1000, 500);
 
 // Configuration du panneau pour les boutons
         this.panelSettings.setBounds(50, 100, 300, 200); // Panneau de dimensions adaptées au contenu
         this.panelSettings.setLayout(new GridLayout(3, 1, 10, 50)); // 3 lignes, 1 colonne, espace entre les composants
-        this.panelSettings.setBackground(Color.DARK_GRAY);
+        this.panelSettings.setBackground(MorpionThemeManager.getBackgroundColor());
 
 // Ajout des boutons dans le panneau
         this.panelSettings.add(btBack);    // Bouton "Retour"
+        this.btBack.setBackground(Color.WHITE);
         this.panelSettings.add(btColor);   // Bouton "Couleur"
+        this.btColor.setBackground(Color.WHITE);
         this.panelSettings.add(btSave);    // Bouton "Sauvegarder"
+        this.btSave.setBackground(Color.WHITE);
 
 // Ajout du panneau contenant les boutons à la fenêtre principale
         this.add(this.panelSettings);
@@ -45,6 +49,8 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         this.btColor.addActionListener(this);
 
         this.add(unMorpionPanelCouleur);
+
+        MorpionThemeManager.addColorChangeListener(this);
 
 // Rendre la fenêtre visible
         this.setVisible(true);
@@ -66,6 +72,7 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         if(e.getSource() == this.btBack)
         {
             this.dispose();
+            Morpion.setVisibleMenu(true);
         }
 
         String choix = e.getActionCommand();
@@ -75,4 +82,21 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
             this.afficherPanel(1);
         }
     }
+
+    @Override
+    public void onColorChange(Color newColor) {
+        // Mettre à jour la couleur de fond dynamique
+        this.getContentPane().setBackground(newColor);
+        this.panelSettings.setBackground(newColor);
+
+
+
+        // Propager la couleur au panneau de thème
+        unMorpionPanelCouleur.setBackground(newColor);
+
+        // Redessiner les composants
+        this.repaint();
+        this.revalidate();
+    }
+
 }
