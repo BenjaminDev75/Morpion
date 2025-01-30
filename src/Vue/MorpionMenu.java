@@ -58,8 +58,6 @@ public class MorpionMenu extends JFrame implements ActionListener, MorpionThemeM
         this.getContentPane().setBackground(newColor);
         panelForm.setBackground(newColor);
 
-
-
         // Redessiner la fenêtre
         this.repaint();
         this.revalidate();
