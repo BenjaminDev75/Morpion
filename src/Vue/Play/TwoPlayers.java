@@ -152,8 +152,4 @@ public class TwoPlayers extends JFrame implements ActionListener {
         // Pas de gagnant
         return null;
     }
-
-    public static void main(String[] args) {
-        new TwoPlayers();
-    }
 }
