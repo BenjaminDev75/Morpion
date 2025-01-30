@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MorpionThemeManager {
-    private static Color backgroundColor = Color.CYAN; // Couleur initiale
+    private static Color backgroundColor = Color.LIGHT_GRAY; // Couleur initiale
     private static List<ColorChangeListener> listeners = new ArrayList<>();
 
     public static Color getBackgroundColor() {
