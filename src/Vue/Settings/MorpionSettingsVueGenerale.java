@@ -14,11 +14,10 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
     private JButton btColor = new JButton("Thème");
 
     // instance du panel
-    private static MorpionPanelCouleur unMorpionPanelCouleur = new MorpionPanelCouleur();
+    private static MorpionPanelTheme unMorpionPanelCouleur = new MorpionPanelTheme();
 
     public MorpionSettingsVueGenerale() {
 
-        //
         // Configuration de la fenêtre
         this.setTitle("Paramètre");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,6 +43,8 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         this.btBack.addActionListener(this);
         this.btSave.addActionListener(this);
         this.btColor.addActionListener(this);
+
+        this.add(unMorpionPanelCouleur);
 
 // Rendre la fenêtre visible
         this.setVisible(true);
