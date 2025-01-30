@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class TwoPlayers extends JFrame implements ActionListener {
 
@@ -85,22 +86,11 @@ public class TwoPlayers extends JFrame implements ActionListener {
         if (winner != null) {
             // Afficher un message de victoire
             JOptionPane.showMessageDialog(this, "Félicitations ! " + winner + " a gagné !");
-            disableGrid(); // Désactiver la grille
+            resetGame(); // Réinitialise la grille
         } else if (movesCount == SIZE * SIZE) {
             // Match nul (toutes les cases sont remplies)
             JOptionPane.showMessageDialog(this, "Match nul ! Aucun gagnant.");
-            disableGrid();
-        }
-    }
-
-    /**
-     * Désactive tous les boutons de la grille
-     */
-    private void disableGrid() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                gridButtons[i][j].setEnabled(false);
-            }
+            resetGame(); // Réinitialise la grille
         }
     }
 
