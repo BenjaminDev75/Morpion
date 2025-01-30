@@ -18,10 +18,10 @@ public class MorpionPanelTheme extends MorpionPanelPrincipal {
         JButton btChoisir = new JButton("Choisir");
 
         // Définir les positions des boutons
-        btSombre.setBounds(100, 100, 150, 30);
-        btClair.setBounds(100, 150, 150, 30);
-        btAleatoire.setBounds(100, 200, 150, 30);
-        btChoisir.setBounds(100, 250, 150, 30);
+        btSombre.setBounds(100, 130, 150, 30);
+        btClair.setBounds(300, 130, 150, 30);
+        btAleatoire.setBounds(100, 230, 150, 30);
+        btChoisir.setBounds(300, 230, 150, 30);
 
         // Action pour le bouton "Sombre"
         btSombre.addActionListener(e -> {

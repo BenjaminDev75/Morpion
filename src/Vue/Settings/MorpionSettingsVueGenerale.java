@@ -11,7 +11,6 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
     private JPanel panelSettings = new JPanel();
 
     private JButton btBack = new JButton("Retour");
-    private JButton btSave = new JButton("Sauvegarder");
     private JButton btColor = new JButton("Thème");
 
     // instance du panel
@@ -28,7 +27,7 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         this.setBounds(100, 100, 1000, 500);
 
 // Configuration du panneau pour les boutons
-        this.panelSettings.setBounds(50, 100, 300, 200); // Panneau de dimensions adaptées au contenu
+        this.panelSettings.setBounds(50, 150, 300, 200); // Panneau de dimensions adaptées au contenu
         this.panelSettings.setLayout(new GridLayout(3, 1, 10, 50)); // 3 lignes, 1 colonne, espace entre les composants
         this.panelSettings.setBackground(MorpionThemeManager.getBackgroundColor());
 
@@ -37,15 +36,13 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         this.btBack.setBackground(Color.WHITE);
         this.panelSettings.add(btColor);   // Bouton "Couleur"
         this.btColor.setBackground(Color.WHITE);
-        this.panelSettings.add(btSave);    // Bouton "Sauvegarder"
-        this.btSave.setBackground(Color.WHITE);
+
 
 // Ajout du panneau contenant les boutons à la fenêtre principale
         this.add(this.panelSettings);
 
 // Ajout d'écouteurs d'événements pour chaque bouton
         this.btBack.addActionListener(this);
-        this.btSave.addActionListener(this);
         this.btColor.addActionListener(this);
 
         this.add(unMorpionPanelCouleur);
