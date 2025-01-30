@@ -61,5 +61,10 @@ public class PlayMenu extends JFrame implements ActionListener{
             Morpion.createTwoPlayer(true);
         }
 
+        if(e.getSource() == btOnePlayer){
+            Morpion.setVisiblePlayMenu(false);
+            Morpion.createOnePlayer(true);
+        }
+
     }
 }

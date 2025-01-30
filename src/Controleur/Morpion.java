@@ -1,5 +1,6 @@
 package Controleur;
 
+import Vue.Play.OnePlayer;
 import Vue.Play.TwoPlayers;
 import Vue.Play.PlayMenu;
 import Vue.MorpionMenu;
@@ -12,6 +13,7 @@ public class Morpion {
     private static MorpionSettingsVueGenerale unMorpionSettingsVueGenerale;
     private static PlayMenu unPlayMenu;
     private static TwoPlayers unTwoPlayers;
+    private static OnePlayer unOnePlayer;
 
     public static void setVisibleMenu(boolean action){
         unMorpionMenu.setVisible(action);
@@ -54,6 +56,14 @@ public class Morpion {
             unTwoPlayers = new TwoPlayers();
         }else {
             unTwoPlayers.dispose();
+        }
+    }
+
+    public static void createOnePlayer(boolean action){
+        if(action == true){
+            unOnePlayer = new OnePlayer();
+        }else {
+            unOnePlayer.dispose();
         }
     }
 
