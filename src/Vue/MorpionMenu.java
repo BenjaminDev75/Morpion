@@ -1,5 +1,7 @@
 package Vue;
 
+import Controleur.Morpion;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,7 +18,7 @@ public class MorpionMenu extends JFrame implements ActionListener {
     public MorpionMenu()
     {
 
-        this.setTitle("Morpion");
+        this.setTitle("Controleur.Morpion");
         this.setBounds(100, 100, 1500, 850);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(Color.DARK_GRAY);
@@ -31,6 +33,8 @@ public class MorpionMenu extends JFrame implements ActionListener {
         this.panelForm.add(btSettings);
         this.add(panelForm);
 
+        this.btPlay.addActionListener(this);
+        this.btSettings.addActionListener(this);
 
         this.setVisible(true);
     }
@@ -38,6 +42,12 @@ public class MorpionMenu extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if(e.getSource() == btSettings){
+            Morpion.setVisibleMenu(false);
+            Morpion.createMorpionSettingsVueGenerale(true);
+
+        }
 
     }
 }
