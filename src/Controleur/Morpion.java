@@ -78,13 +78,7 @@ public class Morpion {
     // Start Controleur.Morpion
     public static void main(String[] args) {
         unMorpionMenu =  new MorpionMenu();
-        System.out.println("Welcome");
-        // caca
-
-
     }
-
-
 }
 
 
