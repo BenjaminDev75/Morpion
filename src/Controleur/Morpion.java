@@ -67,6 +67,14 @@ public class Morpion {
         }
     }
 
+    public static void setVisibleTwoPlayer(boolean action){
+        if(action == true){
+            unTwoPlayers = new TwoPlayers();
+        }else{
+            unTwoPlayers.dispose();
+        }
+    }
+
     // Start Controleur.Morpion
     public static void main(String[] args) {
         unMorpionMenu =  new MorpionMenu();

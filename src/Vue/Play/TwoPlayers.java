@@ -1,5 +1,6 @@
 package Vue.Play;
 
+import Controleur.Morpion;
 import Vue.Settings.MorpionThemeManager;
 
 import javax.swing.*;
@@ -261,7 +262,6 @@ public class TwoPlayers extends JFrame implements ActionListener {
         this.dispose();
 
         // Lancer le menu principal
-        new PlayMenu();
+        Morpion.createPlayMenu(true);
     }
-
 }
