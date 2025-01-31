@@ -21,15 +21,22 @@ public class TwoPlayers extends JFrame implements ActionListener {
     private static final int SIZE = 3; // Taille de la grille (3x3)
     private JButton[][] gridButtons = new JButton[SIZE][SIZE];
     private boolean isPlayer1Turn = true; // Tour du joueur 1 (true pour "X", false pour "O")
-    private JLabel statusLabel = new JLabel("Joueur 1 (X) à vous de jouer !");
+    private JLabel statusLabel = new JLabel();
     private int movesCount = 0; // Pour compter le nombre de tours
     private int joueur1Score = 0; // Score du joueur 1
     private int joueur2Score = 0; // Score du joueur 2
-    private JLabel scoreLabel = new JLabel("Score - Joueur 1: 0 | Joueur 2: 0");
+    private JLabel scoreLabel = new JLabel();
 
-    public TwoPlayers() {
+    private String player1Name;
+    private String player2Name;
+
+    public TwoPlayers(String player1Name, String player2Name) {
+
+        this.player1Name = player1Name;
+        this.player2Name = player2Name;
+
         // Configuration de la fenêtre
-        this.setTitle("Morpion - 2 Joueurs");
+        this.setTitle("Morpion - " + player1Name + " VS " + player2Name);
         this.setSize(600, 750); // Ajustez la taille de la fenêtre pour inclure tous les composants
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,15 +74,17 @@ public class TwoPlayers extends JFrame implements ActionListener {
 
 
 // Configurer le label du statut
+        statusLabel = new JLabel(player1Name + " (X), à vous de jouer !");
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        statusLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0)); // Marges : Haut, Gauche, Bas, Droite
+        statusLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         statusPanel.add(statusLabel);
 
 // Configurer le label du score
+        scoreLabel = new JLabel("Score - " + player1Name + ": 0 | " + player2Name + ": 0");
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        scoreLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0)); // Marges : Haut, Gauche, Bas, Droite
+        scoreLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         statusPanel.add(scoreLabel);
 
 // Ajouter le panneau du statut et score
@@ -125,10 +134,10 @@ public class TwoPlayers extends JFrame implements ActionListener {
         // Ajouter "X" ou "O" selon le joueur en cours
         if (isPlayer1Turn) {
             clickedButton.setText("X");
-            statusLabel.setText("Joueur 2 (O) à vous de jouer !");
+            statusLabel.setText(player2Name + " (O), à vous de jouer !");
         } else {
             clickedButton.setText("O");
-            statusLabel.setText("Joueur 1 (X) à vous de jouer !");
+            statusLabel.setText(player1Name + " (X), à vous de jouer !");
         }
 
         movesCount++;
@@ -146,7 +155,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
 
         if (winner != null) {
             // Afficher un message de victoire et mettre à jour les scores
-            if (winner.equals("Joueur 1 (X)")) {
+            if (winner.equals(player1Name + " (X)")) {
                 joueur1Score++;
             } else {
                 joueur2Score++;
@@ -165,7 +174,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
      * Met à jour le label du score
      */
     private void updateScoreLabel() {
-        scoreLabel.setText("Score - Joueur 1: " + joueur1Score + " | Joueur 2: " + joueur2Score);
+        scoreLabel.setText("Score - " + player1Name + ": " + joueur1Score + " | " + player2Name + ": " + joueur2Score);
     }
 
     /**
@@ -174,7 +183,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
     private void resetGame() {
         isPlayer1Turn = true;
         movesCount = 0;
-        statusLabel.setText("Joueur 1 (X) à vous de jouer !");
+        statusLabel.setText(player1Name + " (X), à vous de jouer !");
 
         // Réinitialiser chaque bouton
         for (int i = 0; i < SIZE; i++) {
@@ -196,7 +205,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
             if (!gridButtons[i][0].getText().equals("") &&
                     gridButtons[i][0].getText().equals(gridButtons[i][1].getText()) &&
                     gridButtons[i][0].getText().equals(gridButtons[i][2].getText())) {
-                return gridButtons[i][0].getText().equals("X") ? "Joueur 1 (X)" : "Joueur 2 (O)";
+                return gridButtons[i][0].getText().equals("X") ? player1Name + " (X)" : player2Name + " (O)";
             }
         }
 
@@ -205,7 +214,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
             if (!gridButtons[0][i].getText().equals("") &&
                     gridButtons[0][i].getText().equals(gridButtons[1][i].getText()) &&
                     gridButtons[0][i].getText().equals(gridButtons[2][i].getText())) {
-                return gridButtons[0][i].getText().equals("X") ? "Joueur 1 (X)" : "Joueur 2 (O)";
+                return gridButtons[0][i].getText().equals("X") ? player1Name + " (X)" : player2Name + " (O)";
             }
         }
 
@@ -213,14 +222,14 @@ public class TwoPlayers extends JFrame implements ActionListener {
         if (!gridButtons[0][0].getText().equals("") &&
                 gridButtons[0][0].getText().equals(gridButtons[1][1].getText()) &&
                 gridButtons[0][0].getText().equals(gridButtons[2][2].getText())) {
-            return gridButtons[0][0].getText().equals("X") ? "Joueur 1 (X)" : "Joueur 2 (O)";
+            return gridButtons[0][0].getText().equals("X") ? player1Name + " (X)" : player2Name + " (O)";
         }
 
         // Vérifier la diagonale secondaire
         if (!gridButtons[0][2].getText().equals("") &&
                 gridButtons[0][2].getText().equals(gridButtons[1][1].getText()) &&
                 gridButtons[0][2].getText().equals(gridButtons[2][0].getText())) {
-            return gridButtons[0][2].getText().equals("X") ? "Joueur 1 (X)" : "Joueur 2 (O)";
+            return gridButtons[0][2].getText().equals("X") ? player1Name + " (X)" : player2Name + " (O)";
         }
 
         // Pas de gagnant
@@ -242,7 +251,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
             writer.newLine();
             writer.write("Date de la partie : " + currentDateTime);
             writer.newLine();
-            writer.write("Score joueur 1 : " + joueur1Score + " | Score joueur 2 : " + joueur2Score);
+            writer.write("Score - " + player1Name + " : " + joueur1Score + " | " + player2Name + " : " + joueur2Score);
             writer.newLine();
 
             writer.write("======================================");

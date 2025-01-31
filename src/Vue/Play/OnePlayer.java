@@ -19,16 +19,21 @@ public class OnePlayer extends JFrame implements ActionListener {
     private static final int SIZE = 3; // Taille de la grille (3x3)
     private JButton[][] gridButtons = new JButton[SIZE][SIZE];
     private boolean isPlayer1Turn = true; // True = joueur humain (X), False = ordinateur (O)
-    private JLabel statusLabel = new JLabel("Joueur 1 (X) à vous de jouer !");
+    private JLabel statusLabel = new JLabel();
     private int movesCount = 0;
     private int joueurScore = 0; // Score du joueur 1
     private int ordiScore = 0; // Score de l'ordinateur
-    private JLabel scoreLabel = new JLabel("Score - Joueur 1: 0 | Ordi : 0");
+    private JLabel scoreLabel = new JLabel();
     private Random random = new Random(); // Génére des mouvements aléatoires pour l'ordinateur
 
-    public OnePlayer() {
+    private String playerName; // Nom du joueur
+
+    public OnePlayer(String playerName) {
+
+        this.playerName = playerName;
+
         // Configuration de la fenêtre
-        this.setTitle("Morpion - 1 Joueur");
+        this.setTitle("Morpion - " + playerName + " VS Ordinateur");
         this.setSize(600, 750);
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,24 +63,28 @@ public class OnePlayer extends JFrame implements ActionListener {
         gridWrapperPanel.add(gridPanel);
         this.add(gridWrapperPanel, BorderLayout.CENTER);
 
-        // Zone pour les statuts et le score
+        // Panel pour afficher les statuts et le score
         JPanel statusPanel = new JPanel();
-        statusPanel.setLayout(new GridLayout(2, 1));
+        statusPanel.setLayout(new GridLayout(2, 1)); // Deux lignes : statut et score
         statusPanel.setBackground(MorpionThemeManager.getBackgroundColor());
 
+        // Initialisation de l'étiquette pour le statut
+        statusLabel = new JLabel(playerName + " (X), à vous de jouer !");
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        statusLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         statusPanel.add(statusLabel);
 
+        // Initialisation du label pour le score
+        scoreLabel = new JLabel("Score - " + playerName + ": 0 | Ordinateur : 0");
         scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
         scoreLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         statusPanel.add(scoreLabel);
 
+        // Ajouter le panneau de statuts et de scores à l'interface
         this.add(statusPanel, BorderLayout.NORTH);
 
-        // Boutons (Réinitialiser et Menu)
+        // Boutons Réinitialiser et Menu
         JPanel bottomPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         bottomPanel.setBackground(MorpionThemeManager.getBackgroundColor());
 
@@ -118,6 +127,9 @@ public class OnePlayer extends JFrame implements ActionListener {
             return;
         }
 
+        // Afficher que l'ordinateur va jouer
+        statusLabel.setText("Ordinateur (O) est en train de jouer...");
+
         // Ordinateur joue automatiquement après un court délai
         Timer timer = new Timer(1000, event -> computerMove());
         timer.setRepeats(false);
@@ -143,7 +155,7 @@ public class OnePlayer extends JFrame implements ActionListener {
         // Vérifier si l'ordinateur a gagné ou si la partie est terminée
         if (!checkGameState()) {
             isPlayer1Turn = true; // Redonne la main au joueur
-            statusLabel.setText("Joueur 1 (X) à vous de jouer !");
+            statusLabel.setText(playerName + " (X), à vous de jouer !");
         }
     }
 
@@ -175,7 +187,7 @@ public class OnePlayer extends JFrame implements ActionListener {
      * Met à jour le score affiché
      */
     private void updateScoreLabel() {
-        scoreLabel.setText("Score - Joueur 1: " + joueurScore + " | Ordi : " + ordiScore);
+        scoreLabel.setText("Score - " + playerName + ": " + joueurScore + " | Ordinateur : " + ordiScore);
     }
 
     /**
@@ -184,7 +196,7 @@ public class OnePlayer extends JFrame implements ActionListener {
     private void resetGame() {
         isPlayer1Turn = true;
         movesCount = 0;
-        statusLabel.setText("Joueur 1 (X) à vous de jouer !");
+        statusLabel.setText(playerName + " (X), à vous de jouer !");
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 gridButtons[i][j].setText("");
@@ -242,7 +254,7 @@ public class OnePlayer extends JFrame implements ActionListener {
             writer.newLine();
             writer.write("Date de la partie : " + currentDateTime);
             writer.newLine();
-            writer.write("Score joueur 1 : " + joueurScore + " | Score Ordinateur : " + ordiScore);
+            writer.write("Score " + playerName + " : " + joueurScore + " | Score Ordinateur : " + ordiScore);
             writer.newLine();
 
             writer.write("======================================");
