@@ -60,7 +60,7 @@ public class PlayMenu extends JFrame implements ActionListener{
         if (e.getSource() == btHistorique) {
             if (e.getSource() == btHistorique) {
                 try {
-                    File historiqueFile = new File("src/Vue/Play/historique_partie.txt");
+                    File historiqueFile = new File("src/Historique/historique_partie.txt");
 
                     if (!historiqueFile.exists()) {
                         JOptionPane.showMessageDialog(this, "Le fichier historique_partie.txt n'existe pas.",
