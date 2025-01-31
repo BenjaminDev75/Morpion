@@ -1,9 +1,17 @@
 package Vue.Play;
 
+import Controleur.Morpion;
+import Vue.Settings.MorpionThemeManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class OnePlayer extends JFrame implements ActionListener {
@@ -12,25 +20,29 @@ public class OnePlayer extends JFrame implements ActionListener {
     private JButton[][] gridButtons = new JButton[SIZE][SIZE];
     private boolean isPlayer1Turn = true; // True = joueur humain (X), False = ordinateur (O)
     private JLabel statusLabel = new JLabel("Joueur 1 (X) à vous de jouer !");
-    private int movesCount = 0; // Pour compter le nombre de tours
-    private Random random = new Random(); // Utilisé pour le choix aléatoire de l'ordinateur
+    private int movesCount = 0;
+    private int joueurScore = 0; // Score du joueur 1
+    private int ordiScore = 0; // Score de l'ordinateur
+    private JLabel scoreLabel = new JLabel("Score - Joueur 1: 0 | Ordi : 0");
+    private Random random = new Random(); // Génére des mouvements aléatoires pour l'ordinateur
 
     public OnePlayer() {
         // Configuration de la fenêtre
         this.setTitle("Morpion - 1 Joueur");
-        this.setSize(500, 550);
+        this.setSize(600, 750);
+        this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
-        // Zone de statut
-        statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        this.add(statusLabel, BorderLayout.NORTH);
+        // Panneau principal pour la grille
+        JPanel gridWrapperPanel = new JPanel();
+        gridWrapperPanel.setLayout(new GridBagLayout());
+        gridWrapperPanel.setBackground(MorpionThemeManager.getBackgroundColor());
 
-        // Grille de jeu (panneau central)
         JPanel gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
-        this.add(gridPanel, BorderLayout.CENTER);
+        gridPanel.setPreferredSize(new Dimension(400, 400));
+        gridPanel.setBackground(MorpionThemeManager.getBackgroundColor());
 
         // Initialisation de la grille
         for (int i = 0; i < SIZE; i++) {
@@ -43,13 +55,47 @@ public class OnePlayer extends JFrame implements ActionListener {
             }
         }
 
-        // Bouton pour réinitialiser le jeu
+        gridWrapperPanel.add(gridPanel);
+        this.add(gridWrapperPanel, BorderLayout.CENTER);
+
+        // Zone pour les statuts et le score
+        JPanel statusPanel = new JPanel();
+        statusPanel.setLayout(new GridLayout(2, 1));
+        statusPanel.setBackground(MorpionThemeManager.getBackgroundColor());
+
+        statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        statusLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        statusPanel.add(statusLabel);
+
+        scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        scoreLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        statusPanel.add(scoreLabel);
+
+        this.add(statusPanel, BorderLayout.NORTH);
+
+        // Boutons (Réinitialiser et Menu)
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+        bottomPanel.setBackground(MorpionThemeManager.getBackgroundColor());
+
         JButton resetButton = new JButton("Réinitialiser");
         resetButton.setFont(new Font("Arial", Font.PLAIN, 16));
         resetButton.addActionListener(e -> resetGame());
-        this.add(resetButton, BorderLayout.SOUTH);
+        bottomPanel.add(resetButton);
 
-        // Rendre la fenêtre visible
+        JButton menuButton = new JButton("Menu");
+        menuButton.setFont(new Font("Arial", Font.PLAIN, 16));
+        menuButton.addActionListener(e -> returnToMenu());
+        bottomPanel.add(menuButton);
+
+        JPanel bottomWrapperPanel = new JPanel(new BorderLayout());
+        bottomWrapperPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10));
+        bottomWrapperPanel.add(bottomPanel, BorderLayout.CENTER);
+        bottomWrapperPanel.setBackground(MorpionThemeManager.getBackgroundColor());
+
+        this.add(bottomWrapperPanel, BorderLayout.PAGE_END);
+
         this.setVisible(true);
     }
 
@@ -57,26 +103,23 @@ public class OnePlayer extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton clickedButton = (JButton) e.getSource();
 
-        // Ignorer si le bouton est déjà utilisé
+        // Vérifier si la case est déjà jouée ou si ce n'est pas le tour du joueur
         if (!clickedButton.getText().equals("") || !isPlayer1Turn) {
             return;
         }
 
-        // Joueur humain (X) joue
+        // Joueur 1 (X) joue
         clickedButton.setText("X");
         movesCount++;
         isPlayer1Turn = false;
-        statusLabel.setText("Ordinateur (O) est en train de jouer...");
 
-        // Vérifier si quelqu'un a gagné ou si c'est une égalité
+        // Vérifier si quelqu'un a gagné ou si la partie est terminée
         if (checkGameState()) {
             return;
         }
 
         // Ordinateur joue automatiquement après un court délai
-        Timer timer = new Timer(1000, event -> {
-            computerMove();
-        });
+        Timer timer = new Timer(1000, event -> computerMove());
         timer.setRepeats(false);
         timer.start();
     }
@@ -85,7 +128,6 @@ public class OnePlayer extends JFrame implements ActionListener {
      * Déplace aléatoirement pour l'ordinateur
      */
     private void computerMove() {
-        // Choisit une case vide au hasard
         boolean played = false;
         while (!played) {
             int i = random.nextInt(SIZE);
@@ -98,58 +140,62 @@ public class OnePlayer extends JFrame implements ActionListener {
             }
         }
 
-        // Vérifier si l'ordinateur a gagné ou si c'est une égalité
+        // Vérifier si l'ordinateur a gagné ou si la partie est terminée
         if (!checkGameState()) {
-            isPlayer1Turn = true;
+            isPlayer1Turn = true; // Redonne la main au joueur
             statusLabel.setText("Joueur 1 (X) à vous de jouer !");
         }
     }
 
     /**
-     * Vérifie l'état du jeu : victoire ou égalité
+     * Vérifie l'état du jeu : victoire ou match nul
      */
     private boolean checkGameState() {
         String winner = getWinner();
 
         if (winner != null) {
-            // Afficher un message de victoire
-            JOptionPane.showMessageDialog(this, "Félicitations ! " + winner + " a gagné !");
-            resetGame(); // Réinitialise la grille
+            if (winner.equals("Joueur 1 (X)")) {
+                joueurScore++;
+            } else {
+                ordiScore++;
+            }
+            updateScoreLabel();
+            JOptionPane.showMessageDialog(this, winner + " a gagné !");
+            resetGame();
             return true;
         } else if (movesCount == SIZE * SIZE) {
-            // Match nul (toutes les cases sont remplies)
-            JOptionPane.showMessageDialog(this, "Match nul ! Aucun gagnant.");
-            resetGame(); // Réinitialise la grille
+            JOptionPane.showMessageDialog(this, "Match nul !");
+            resetGame();
             return true;
         }
-
         return false;
     }
 
     /**
-     * Réinitialise le jeu
+     * Met à jour le score affiché
+     */
+    private void updateScoreLabel() {
+        scoreLabel.setText("Score - Joueur 1: " + joueurScore + " | Ordi : " + ordiScore);
+    }
+
+    /**
+     * Réinitialise la partie
      */
     private void resetGame() {
         isPlayer1Turn = true;
         movesCount = 0;
         statusLabel.setText("Joueur 1 (X) à vous de jouer !");
-
-        // Réinitialiser chaque bouton
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 gridButtons[i][j].setText("");
-                gridButtons[i][j].setEnabled(true);
             }
         }
     }
 
     /**
      * Vérifie s'il y a un gagnant
-     *
-     * @return "Joueur 1", "Ordinateur" ou null (si pas de gagnant)
      */
     private String getWinner() {
-        // Vérifier les lignes
         for (int i = 0; i < SIZE; i++) {
             if (!gridButtons[i][0].getText().equals("") &&
                     gridButtons[i][0].getText().equals(gridButtons[i][1].getText()) &&
@@ -158,7 +204,6 @@ public class OnePlayer extends JFrame implements ActionListener {
             }
         }
 
-        // Vérifier les colonnes
         for (int i = 0; i < SIZE; i++) {
             if (!gridButtons[0][i].getText().equals("") &&
                     gridButtons[0][i].getText().equals(gridButtons[1][i].getText()) &&
@@ -167,21 +212,54 @@ public class OnePlayer extends JFrame implements ActionListener {
             }
         }
 
-        // Vérifier la diagonale principale
         if (!gridButtons[0][0].getText().equals("") &&
                 gridButtons[0][0].getText().equals(gridButtons[1][1].getText()) &&
                 gridButtons[0][0].getText().equals(gridButtons[2][2].getText())) {
             return gridButtons[0][0].getText().equals("X") ? "Joueur 1 (X)" : "Ordinateur (O)";
         }
 
-        // Vérifier la diagonale secondaire
         if (!gridButtons[0][2].getText().equals("") &&
                 gridButtons[0][2].getText().equals(gridButtons[1][1].getText()) &&
                 gridButtons[0][2].getText().equals(gridButtons[2][0].getText())) {
             return gridButtons[0][2].getText().equals("X") ? "Joueur 1 (X)" : "Ordinateur (O)";
         }
 
-        // Pas de gagnant
         return null;
+    }
+
+    private void saveGameToFile() {
+        String directoryPath = "src/Historique/"; // Répertoire souhaité
+        String fileName = directoryPath + "historique_partie.txt"; // Nom du fichier où enregistrer l'historique
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            // Récupérer la date/heure actuelle
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String currentDateTime = now.format(formatter);
+
+            // Écrire les détails de la partie
+            writer.write("Mode de jeu : 1 Joueur");
+            writer.newLine();
+            writer.write("Date de la partie : " + currentDateTime);
+            writer.newLine();
+            writer.write("Score joueur 1 : " + joueurScore + " | Score Ordinateur : " + ordiScore);
+            writer.newLine();
+
+            writer.write("======================================");
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde de la partie.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Retourne au menu principal
+     */
+    private void returnToMenu() {
+        // Sauvegarder les données de la partie avant de revenir au menu
+        saveGameToFile();
+        this.dispose();
+        Morpion.createPlayMenu(true);
     }
 }

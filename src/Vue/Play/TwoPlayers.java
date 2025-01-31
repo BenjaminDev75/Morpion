@@ -23,8 +23,8 @@ public class TwoPlayers extends JFrame implements ActionListener {
     private boolean isPlayer1Turn = true; // Tour du joueur 1 (true pour "X", false pour "O")
     private JLabel statusLabel = new JLabel("Joueur 1 (X) à vous de jouer !");
     private int movesCount = 0; // Pour compter le nombre de tours
-    private int player1Score = 0; // Score du joueur 1
-    private int player2Score = 0; // Score du joueur 2
+    private int joueur1Score = 0; // Score du joueur 1
+    private int joueur2Score = 0; // Score du joueur 2
     private JLabel scoreLabel = new JLabel("Score - Joueur 1: 0 | Joueur 2: 0");
 
     public TwoPlayers() {
@@ -147,9 +147,9 @@ public class TwoPlayers extends JFrame implements ActionListener {
         if (winner != null) {
             // Afficher un message de victoire et mettre à jour les scores
             if (winner.equals("Joueur 1 (X)")) {
-                player1Score++;
+                joueur1Score++;
             } else {
-                player2Score++;
+                joueur2Score++;
             }
             updateScoreLabel();
             JOptionPane.showMessageDialog(this, "Félicitations ! " + winner + " a gagné !");
@@ -165,7 +165,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
      * Met à jour le label du score
      */
     private void updateScoreLabel() {
-        scoreLabel.setText("Score - Joueur 1: " + player1Score + " | Joueur 2: " + player2Score);
+        scoreLabel.setText("Score - Joueur 1: " + joueur1Score + " | Joueur 2: " + joueur2Score);
     }
 
     /**
@@ -238,9 +238,11 @@ public class TwoPlayers extends JFrame implements ActionListener {
             String currentDateTime = now.format(formatter);
 
             // Écrire les détails de la partie
+            writer.write("Mode de jeu : 2 Joueur");
+            writer.newLine();
             writer.write("Date de la partie : " + currentDateTime);
             writer.newLine();
-            writer.write("Score joueur 1 : " + player1Score + " | Score joueur 2 : " + player2Score);
+            writer.write("Score joueur 1 : " + joueur1Score + " | Score joueur 2 : " + joueur2Score);
             writer.newLine();
 
             writer.write("======================================");

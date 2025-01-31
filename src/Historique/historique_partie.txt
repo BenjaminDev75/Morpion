@@ -1,3 +1,9 @@
 Date de la partie : 2025-01-31
 Score joueur 1 : 0 | Score joueur 2 : 0
 ======================================
+Date de la partie : 2025-01-31
+Score joueur 1 : 0 | Score joueur 2 : 1
+======================================
+Date de la partie : 2025-01-31
+Score joueur 1 : 1 | Score Ordinateur : 0
+======================================
