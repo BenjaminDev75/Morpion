@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 public class PlayMenu extends JFrame implements ActionListener{
     private JButton btOnePlayer= new JButton("One Player");
@@ -14,6 +16,7 @@ public class PlayMenu extends JFrame implements ActionListener{
     private JButton btBack = new JButton("Back to Menu");
     private JPanel panelForm = new JPanel();
     private JPanel panelBack = new JPanel();
+    private JButton btHistorique = new JButton("Historique");
 
     public PlayMenu() {
 
@@ -33,24 +36,53 @@ public class PlayMenu extends JFrame implements ActionListener{
 
         // Menu play / settings
         this.panelForm.setBackground(MorpionThemeManager.getBackgroundColor());
-        this.panelForm.setLayout(new GridLayout(1, 2));
+        this.panelForm.setLayout(new GridLayout(2, 2));
         this.panelForm.setBounds(570, 400, 350, 50);
         this.panelForm.add(btOnePlayer);
         this.btOnePlayer.setBackground(Color.WHITE);
         this.panelForm.add(btTwoPlayers);
         this.btTwoPlayers.setBackground(Color.WHITE);
+        this.panelForm.add(btHistorique);
+        this.btHistorique.setBackground(Color.WHITE);
         this.add(panelForm);
 
         this.btOnePlayer.addActionListener(this);
         this.btTwoPlayers.addActionListener(this);
         this.btBack.addActionListener(this);
-
+        this.btHistorique.addActionListener(this);
 
         this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+        if (e.getSource() == btHistorique) {
+            if (e.getSource() == btHistorique) {
+                try {
+
+                    File historiqueFile = new File("src/Vue/Play/historique_partie.txt");
+
+
+                    if (!historiqueFile.exists()) {
+                        JOptionPane.showMessageDialog(this, "Le fichier historique_partie.txt n'existe pas.",
+                                "Erreur", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+
+                    Desktop desktop = Desktop.getDesktop();
+                    desktop.open(historiqueFile);
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Impossible d'ouvrir le fichier historique.",
+                            "Erreur", JOptionPane.ERROR_MESSAGE);
+                    ex.printStackTrace();
+                }
+            }
+
+        }
+
         if(e.getSource() == btBack){
             Morpion.setVisiblePlayMenu(false);
             Morpion.setVisibleMenu(true);
