@@ -1,9 +1,19 @@
 package Vue.Play;
 
+import Vue.Settings.MorpionThemeManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+
 
 public class TwoPlayers extends JFrame implements ActionListener {
 
@@ -20,16 +30,19 @@ public class TwoPlayers extends JFrame implements ActionListener {
         // Configuration de la fenêtre
         this.setTitle("Morpion - 2 Joueurs");
         this.setSize(600, 750); // Ajustez la taille de la fenêtre pour inclure tous les composants
+        this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
         // Panneau principal pour la grille (centré)
         JPanel gridWrapperPanel = new JPanel(); // Panneau pour centrer la grille
         gridWrapperPanel.setLayout(new GridBagLayout()); // Centrer la grille dans la fenêtre
+        gridWrapperPanel.setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
 
         JPanel gridPanel = new JPanel(); // Panneau contenant la grille
         gridPanel.setLayout(new GridLayout(SIZE, SIZE));
         gridPanel.setPreferredSize(new Dimension(400, 400)); // Fixe la taille de la grille
+        gridPanel.setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
 
         // Initialisation de la grille
         for (int i = 0; i < SIZE; i++) {
@@ -49,6 +62,8 @@ public class TwoPlayers extends JFrame implements ActionListener {
         // Zone pour afficher le statut et le score ensemble en bas
         JPanel statusPanel = new JPanel();
         statusPanel.setLayout(new GridLayout(2, 1)); // 2 lignes : une pour le statut, l'autre pour le score
+        statusPanel.setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
+
 
 // Configurer le label du statut
         statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -70,6 +85,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
         // Panneau avec les boutons (Réinitialiser et Menu)
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayout(1, 2, 10, 10)); // Espacement horizontal entre les boutons
+        bottomPanel.setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
 
         // Bouton pour réinitialiser le jeu
         JButton resetButton = new JButton("Réinitialiser");
@@ -87,6 +103,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
         JPanel bottomWrapperPanel = new JPanel(new BorderLayout());
         bottomWrapperPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 20, 10)); // Marges : haut, gauche, bas, droite
         bottomWrapperPanel.add(bottomPanel, BorderLayout.CENTER);
+        bottomWrapperPanel.setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
 
         // Ajouter le panneau encapsulé à la fenêtre
         this.add(bottomWrapperPanel, BorderLayout.PAGE_END);
@@ -209,12 +226,42 @@ public class TwoPlayers extends JFrame implements ActionListener {
         return null;
     }
 
+    private void saveGameToFile() {
+        String directoryPath = "src/Historique/"; // Répertoire souhaité
+        String fileName = directoryPath + "historique_partie.txt"; // Nom du fichier où enregistrer l'historique
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
+            // Récupérer la date/heure actuelle
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String currentDateTime = now.format(formatter);
+
+            // Écrire les détails de la partie
+            writer.write("Date de la partie : " + currentDateTime);
+            writer.newLine();
+            writer.write("Score joueur 1 : " + player1Score + " | Score joueur 2 : " + player2Score);
+            writer.newLine();
+
+            writer.write("======================================");
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erreur lors de la sauvegarde de la partie.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     /**
-     * Retourner au menu principal (fermeture de la fenêtre actuelle)
+     * Fonction appelée lors du retour au menu.
      */
     private void returnToMenu() {
-        this.dispose(); // Fermer cette fenêtre
-        // Lancer le menu principal (vous devez implémenter une classe Menu séparée)
+        // Sauvegarder les données de la partie avant de revenir au menu
+        saveGameToFile();
+
+        // Fermer cette fenêtre
+        this.dispose();
+
+        // Lancer le menu principal
         new PlayMenu();
     }
+
 }
