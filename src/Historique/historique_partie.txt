@@ -1,4 +1,25 @@
+
+Mode de jeu : 2 Joueur
+Date de la partie : 2025-02-01
+Score - toto : 1 | titi : 0
+======================================
+Mode de jeu : 2 Joueur
+Date de la partie : 2025-02-01
+Score - ty : 0 | sdf : 0
+======================================
 Mode de jeu : 1 Joueur
-Date de la partie : 2025-01-31
-Score joueur 1 : 1 | Score Ordinateur : 0
+Date de la partie : 2025-02-01
+Score dfg : 0 | Score Ordinateur : 0
+======================================
+Mode de jeu : 1 Joueur
+Date de la partie : 2025-02-01
+Score tru : 0 | Score Ordinateur : 0
+======================================
+Mode de jeu : 1 Joueur
+Date de la partie : 2025-02-01
+Score rtè : 0 | Score Ordinateur : 1
+======================================
+Mode de jeu : 1 Joueur
+Date de la partie : 2025-02-01
+Score ben : 0 | Score Ordinateur : 1
 ======================================
