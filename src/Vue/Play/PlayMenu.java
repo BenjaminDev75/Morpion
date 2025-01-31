@@ -16,6 +16,7 @@ public class PlayMenu extends JFrame implements ActionListener{
     private JButton btBack = new JButton("Back to Menu");
     private JPanel panelForm = new JPanel();
     private JPanel panelBack = new JPanel();
+    private JPanel panelHistorique = new JPanel();
     private JButton btHistorique = new JButton("Historique");
 
     public PlayMenu() {
@@ -29,21 +30,38 @@ public class PlayMenu extends JFrame implements ActionListener{
 
         this.panelBack.setBackground(MorpionThemeManager.getBackgroundColor());
         this.panelBack.setLayout(new GridLayout(1, 2));
-        this.panelBack.setBounds(15, 15, 150, 50);
+        this.panelBack.setBounds(15, 15, 250, 50);
         this.panelBack.add(btBack);
         this.btBack.setBackground(Color.WHITE);
         this.add(panelBack);
 
         // Menu play / settings
         this.panelForm.setBackground(MorpionThemeManager.getBackgroundColor());
-        this.panelForm.setLayout(new GridLayout(2, 2));
-        this.panelForm.setBounds(570, 400, 350, 50);
-        this.panelForm.add(btOnePlayer);
+        this.panelForm.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        this.panelForm.add(btOnePlayer, gbc);
         this.btOnePlayer.setBackground(Color.WHITE);
-        this.panelForm.add(btTwoPlayers);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        this.panelForm.add(btTwoPlayers, gbc);
         this.btTwoPlayers.setBackground(Color.WHITE);
-        this.panelForm.add(btHistorique);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        this.panelForm.add(btHistorique, gbc);
         this.btHistorique.setBackground(Color.WHITE);
+
+        this.panelForm.setBounds(510, 400, 550, 200);
         this.add(panelForm);
 
         this.btOnePlayer.addActionListener(this);
