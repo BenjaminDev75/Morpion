@@ -44,12 +44,16 @@ public class PlayMenu extends JFrame implements ActionListener{
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.ipady = 20;
         this.panelForm.add(btOnePlayer, gbc);
         this.btOnePlayer.setBackground(Color.WHITE);
 
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.ipady = 20;
         this.panelForm.add(btTwoPlayers, gbc);
         this.btTwoPlayers.setBackground(Color.WHITE);
 
@@ -57,11 +61,13 @@ public class PlayMenu extends JFrame implements ActionListener{
         gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.ipady = 20;
         gbc.anchor = GridBagConstraints.CENTER;
         this.panelForm.add(btHistorique, gbc);
         this.btHistorique.setBackground(Color.WHITE);
 
-        this.panelForm.setBounds(510, 400, 550, 200);
+        this.panelForm.setBounds(500, 360, 550, 200);
         this.add(panelForm);
 
         this.btOnePlayer.addActionListener(this);
