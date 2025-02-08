@@ -26,6 +26,7 @@ public class PlayMenu extends JFrame implements ActionListener{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
         this.setLayout(null);
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
 
         this.panelBack.setBackground(MorpionThemeManager.getBackgroundColor());

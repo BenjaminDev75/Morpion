@@ -38,6 +38,7 @@ public class OnePlayer extends JFrame implements ActionListener {
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+        this.setLocationRelativeTo(null);
 
         // Panneau principal pour la grille
         JPanel gridWrapperPanel = new JPanel();

@@ -22,6 +22,7 @@ public class MorpionMenu extends JFrame implements ActionListener, MorpionThemeM
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
         this.setLayout(null);
+        this.setLocationRelativeTo(null);
         this.setResizable(false);
 
         // Menu play / settings

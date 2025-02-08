@@ -41,6 +41,7 @@ public class TwoPlayers extends JFrame implements ActionListener {
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());// Synchronisé avec le fond global
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+        this.setLocationRelativeTo(null);
 
         // Panneau principal pour la grille (centré)
         JPanel gridWrapperPanel = new JPanel(); // Panneau pour centrer la grille

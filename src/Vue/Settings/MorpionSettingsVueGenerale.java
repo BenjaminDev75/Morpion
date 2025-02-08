@@ -21,11 +21,12 @@ public class MorpionSettingsVueGenerale extends JFrame  implements ActionListene
         // Configuration de la fenêtre
         this.setTitle("Paramètre");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         this.setResizable(false);
         this.getContentPane().setBackground(MorpionThemeManager.getBackgroundColor());
         this.setLayout(null);
         this.setBounds(100, 100, 1000, 500);
-
+        this.setLocationRelativeTo(null);
 // Configuration du panneau pour les boutons
         this.panelSettings.setBounds(50, 150, 300, 200); // Panneau de dimensions adaptées au contenu
         this.panelSettings.setLayout(new GridLayout(3, 1, 10, 50)); // 3 lignes, 1 colonne, espace entre les composants
